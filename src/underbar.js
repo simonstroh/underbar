@@ -223,6 +223,9 @@
   _.every = function(collection, iterator) {
     // TIP: Try re-using reduce() here.
     var truthy = true
+    if (collection.length === 0) {
+      return true
+    }
     var accumulatedValue = _.reduce(collection, function(accumulator, item) {
       if (iterator) {
         if (iterator(item)) {
@@ -260,6 +263,33 @@
   // provided, provide a default one
   _.some = function(collection, iterator) {
     // TIP: There's a very clever way to re-use every() here.
+    var accumulatedValue = _.every(collection, iterator)
+    var truthy
+    if (iterator) {
+      if (collection.length === 0) {
+        return false
+      } else if (accumulatedValue === true) {
+        return true
+      } else if (accumulatedValue === false) {
+        var filteredCollection = _.filter(collection, iterator)
+        if (filteredCollection.length > 0) {
+          return true
+        } else {
+          return false
+        }
+      }
+    } else {
+      var isTrue = function(boolean) {
+        return boolean === true
+      }
+      var uniteratedCollection = _.filter(collection, isTrue)
+      if (uniteratedCollection.length > 0) {
+        return true
+      } else {
+        return false
+      }
+    }
+
   };
 
 
@@ -346,6 +376,7 @@
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
+    
   };
 
   // Delays a function for the given number of milliseconds, and then calls
@@ -356,16 +387,17 @@
   // call someFunction('a', 'b') after 500ms
   _.delay = function(func, wait) {
     if (arguments.length > 2) {
-      setTimeout(function() {
-        for (var i = 2; i < arguments.length; i++) {
+      for (var i = 2; i < arguments.length; i++) {
+        setTimeout(function() {
           func(arguments[i])
-        }
-      }, wait)
+        }, wait)
+      }
     } else {
       setTimeout(function() {
         func()
       }, wait)
     }
+
   };
 
 
