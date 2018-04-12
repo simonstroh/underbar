@@ -376,8 +376,20 @@
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
-    
-  };
+
+    var alreadyCalled = false
+    var result
+    return function() {
+      if (!alreadyCalled) {
+        result = func.apply(func, arguments)
+        alreadyCalled = true
+        return result
+      } else {
+        result = func.apply(this, arguments)
+        return result
+      }
+    }
+  }
 
   // Delays a function for the given number of milliseconds, and then calls
   // it with the arguments supplied.
@@ -385,19 +397,16 @@
   // The arguments for the original function are passed after the wait
   // parameter. For example _.delay(someFunction, 500, 'a', 'b') will
   // call someFunction('a', 'b') after 500ms
-  _.delay = function(func, wait) {
+  _.delay = function(func, wait, a, b) {
     if (arguments.length > 2) {
-      for (var i = 2; i < arguments.length; i++) {
-        setTimeout(function() {
-          func(arguments[i])
-        }, wait)
-      }
+      setTimeout(function() {
+        func(a, b)
+      }, wait)
     } else {
       setTimeout(function() {
         func()
       }, wait)
     }
-
   };
 
 
@@ -412,6 +421,71 @@
   // input array. For a tip on how to make a copy of an array, see:
   // http://mdn.io/Array.prototype.slice
   _.shuffle = function(array) {
+    var newArray = []
+    var randomArray = []
+    for (var i = 0; i < array.length; i++) {
+      var totalIndex = array.length
+      function getRandomIndex(max) {
+        return Math.floor(Math.random() * max)
+      }
+      var randomIndex = getRandomIndex(totalIndex)
+      if (!randomArray.includes(randomIndex)) {
+        randomArray.push(randomIndex)
+        newArray[i] = array[randomIndex]
+      } else {
+        var randomIndex = getRandomIndex(totalIndex)
+        if (!randomArray.includes(randomIndex)) {
+          randomArray.push(randomIndex)
+          newArray[i] = array[randomIndex]
+        } else {
+          var randomIndex = getRandomIndex(totalIndex)
+          if (!randomArray.includes(randomIndex)) {
+            randomArray.push(randomIndex)
+            newArray[i] = array[randomIndex]
+          } else {
+            var randomIndex = getRandomIndex(totalIndex)
+            if (!randomArray.includes(randomIndex)) {
+              randomArray.push(randomIndex)
+              newArray[i] = array[randomIndex]
+            } else {
+              var randomIndex = getRandomIndex(totalIndex)
+              if (!randomArray.includes(randomIndex)) {
+                randomArray.push(randomIndex)
+                newArray[i] = array[randomIndex]
+              } else {
+                var randomIndex = getRandomIndex(totalIndex)
+                if (!randomArray.includes(randomIndex)) {
+                  randomArray.push(randomIndex)
+                  newArray[i] = array[randomIndex]
+                } else {
+                  var randomIndex = getRandomIndex(totalIndex)
+                  if (!randomArray.includes(randomIndex)) {
+                    randomArray.push(randomIndex)
+                    newArray[i] = array[randomIndex]
+                  } else {
+                    var randomIndex = getRandomIndex(totalIndex)
+                    if (!randomArray.includes(randomIndex)) {
+                      randomArray.push(randomIndex)
+                      newArray[i] = array[randomIndex]
+                    } else {
+                      var randomIndex = getRandomIndex(totalIndex)
+                      if (!randomArray.includes(randomIndex)) {
+                        randomArray.push(randomIndex)
+                        newArray[i] = array[randomIndex]
+                      } else {
+                        var randomIndex = getRandomIndex(totalIndex)
+                        newArray[i] = array[randomIndex]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    return newArray
   };
 
 
