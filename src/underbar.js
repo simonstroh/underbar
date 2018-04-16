@@ -376,18 +376,13 @@
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
-
-    var alreadyCalled = false
-    var result
+    var newObject = {}
     return function() {
-      if (!alreadyCalled) {
-        result = func.apply(func, arguments)
-        alreadyCalled = true
-        return result
-      } else {
-        result = func.apply(this, arguments)
-        return result
+      var specialCase = JSON.stringify(arguments)
+      if (!newObject[specialCase]) {
+        newObject[specialCase] = func.apply(this, arguments)
       }
+      return newObject[specialCase]
     }
   }
 
